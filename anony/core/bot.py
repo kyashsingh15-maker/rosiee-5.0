@@ -12,9 +12,10 @@ class Bot(pyrogram.Client):
     def __init__(self):
         super().__init__(
             name="anony",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            bot_token=config.BOT_TOKEN,
+            api_id=int(str(config.API_ID).strip()),
+            api_hash=str(config.API_HASH).strip(),
+            bot_token=str(config.BOT_TOKEN).strip(),
+            in_memory=True,
             parse_mode=pyrogram.enums.ParseMode.HTML,
             max_concurrent_transmissions=7,
             link_preview_options=pyrogram.types.LinkPreviewOptions(is_disabled=True),
@@ -31,7 +32,11 @@ class Bot(pyrogram.Client):
         Raises:
             SystemExit: If the bot fails to access the log group or is not an administrator in the logger group.
         """
-        await super().start()
+        try:
+            await super().start()
+        except Exception as ex:
+            logger.error(f"Bot login failed: {type(ex).__name__}: {ex}")
+            raise
         self.id = self.me.id
         self.name = self.me.first_name
         self.username = self.me.username
