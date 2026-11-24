@@ -17,6 +17,8 @@ class Bot(pyrogram.Client):
             bot_token=str(config.BOT_TOKEN).strip(),
             in_memory=True,
             ipv6=False,
+            workers=8,
+            sleep_threshold=60,
             parse_mode=pyrogram.enums.ParseMode.HTML,
             max_concurrent_transmissions=7,
             link_preview_options=pyrogram.types.LinkPreviewOptions(is_disabled=True),
@@ -59,3 +61,4 @@ class Bot(pyrogram.Client):
         """
         await super().stop()
         logger.info("Bot stopped.")
+        
